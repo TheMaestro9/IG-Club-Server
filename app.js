@@ -42,40 +42,42 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 
+if (!appEnv.isLocal) {
 
-var mysql_services = services["compose-for-mysql"];
-assert(!util.isUndefined(mysql_services), "Must be bound to compose-for-mysql services");
-var credentials = mysql_services[0].credentials;
+  var mysql_services = services["compose-for-mysql"];
+  assert(!util.isUndefined(mysql_services), "Must be bound to compose-for-mysql services");
+  var credentials = mysql_services[0].credentials;
 
-var connectionString = credentials.uri;
+  var connectionString = credentials.uri;
 
 
 
-function handleDisconnect() {
-  connection = mysql.createConnection(credentials.uri); // Recreate the connection, since
-  // the old one cannot be reused.
+  function handleDisconnect() {
+    connection = mysql.createConnection(credentials.uri); // Recreate the connection, since
+    // the old one cannot be reused.
 
-  connection.connect(function (err) {              // The server is either down
-    if (err) {                                     // or restarting (takes a while sometimes).
-      console.log('error when connecting to db:', err);
-      setTimeout(handleDisconnect, 2000); // We introduce a delay before attempting to reconnect,
-    } 
-    else{
-      console.log('connected to the Data Base')
-    }                                    // to avoid a hot loop, and to allow our node script to
-  });                                     // process asynchronous requests in the meantime.
-  // If you're also serving http, display a 503 error.
-  connection.on('error', function (err) {
-    console.log('db error', err);
-    if (err.code === 'PROTOCOL_CONNECTION_LOST') { // Connection to the MySQL server is usually
-      handleDisconnect();                         // lost due to either server restart, or a
-    } else {                                      // connnection idle timeout (the wait_timeout
-      throw err;                                  // server variable configures this)
-    }
-  });
+    connection.connect(function (err) {              // The server is either down
+      if (err) {                                     // or restarting (takes a while sometimes).
+        console.log('error when connecting to db:', err);
+        setTimeout(handleDisconnect, 2000); // We introduce a delay before attempting to reconnect,
+      } 
+      else{
+        console.log('connected to the Data Base')
+      }                                    // to avoid a hot loop, and to allow our node script to
+    });                                     // process asynchronous requests in the meantime.
+    // If you're also serving http, display a 503 error.
+    connection.on('error', function (err) {
+      console.log('db error', err);
+      if (err.code === 'PROTOCOL_CONNECTION_LOST') { // Connection to the MySQL server is usually
+        handleDisconnect();                         // lost due to either server restart, or a
+      } else {                                      // connnection idle timeout (the wait_timeout
+        throw err;                                  // server variable configures this)
+      }
+    });
+  }
+
+  handleDisconnect();
 }
-
-handleDisconnect();
 
 
 app.get("/hello", function(request,response){
@@ -83,6 +85,7 @@ app.get("/hello", function(request,response){
   response.send("hello"); 
 
 });
+
 
 
 app.get("/query", function (request, response) {
