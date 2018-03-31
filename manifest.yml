@@ -6,3 +6,6 @@ applications:
   name: Ig-club
   host: Ig-club
   disk_quota: 1024M
+  services:
+    - FFDB
+    

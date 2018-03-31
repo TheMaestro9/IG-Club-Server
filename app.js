@@ -16,6 +16,11 @@ var cfenv = require('cfenv');
 var app = express();
 
 
+const assert = require('assert');
+const util = require('util')
+
+var mysql = require('mysql');
+
 
 // serve the files out of ./public as our main files
 app.use(express.static(__dirname + '/public'));
@@ -23,13 +28,7 @@ app.use(express.static(__dirname + '/public'));
 // get the app environment from Cloud Foundry
 var appEnv = cfenv.getAppEnv();
 
-var services = appenv.services;
-
-var mysql_services = services["compose-for-mysql"];
-assert(!util.isUndefined(mysql_services), "Must be bound to compose-for-mysql services");
-var credentials = mysql_services[0].credentials;
-
-var connectionString = credentials.uri;
+var services = appEnv.services;
 
 var cors = require('cors');
 
@@ -41,6 +40,15 @@ app.use(bodyParser.urlencoded({
   extended: false
 }));
 app.use(bodyParser.json());
+
+
+
+var mysql_services = services["compose-for-mysql"];
+assert(!util.isUndefined(mysql_services), "Must be bound to compose-for-mysql services");
+var credentials = mysql_services[0].credentials;
+
+var connectionString = credentials.uri;
+
 
 
 function handleDisconnect() {
