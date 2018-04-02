@@ -3,17 +3,30 @@
 	"version": "0.0.1",
 	"private": true,
 	"scripts": {
-		"start": "node app.js"
+		"start": "node app.js",
+		"test": "jest",
+		"monitor": "nodemon app.js"
+	},
+	"jest": {
+		"testEnvironment": "node"
 	},
 	"dependencies": {
-		"express": "4.15.x",
-		"cfenv": "1.0.x",
 		"body-parser": "^1.15.2",
+		"cfenv": "1.0.x",
 		"cors": "^2.8.4",
-		"mysql": "*"
+		"express": "4.15.x",
+		"mysql": "*",
+		"mysql2": "^1.5.3",
+		"sequelize": "^4.37.5"
 	},
 	"repository": {},
 	"engines": {
 		"node": "6.x"
+	},
+	"devDependencies": {
+		"sequelize-cli": "^4.0.0",
+		"jest": "^22.4.3",
+		"nodemon": "^1.17.3",
+		"supertest": "^3.0.0"
 	}
 }
