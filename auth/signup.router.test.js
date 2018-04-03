@@ -19,8 +19,13 @@ describe("Routes /signup", () => {
     });
 
     it("Right respose body", async () => {
-        const response = await request(app).post('/signup');
-        expect(response.body.message).toEqual("Not yet implemented");
+        const response = await request(app)
+        .post('/signup')        
+        .send('username', 'foo')
+        .send('email', "foo@example.com")
+        .send('password', 'passwd');
+        
+        expect(response.body.message).toEqual("success");
     });
 
     it("GET request should raise an error 401", async () => {
