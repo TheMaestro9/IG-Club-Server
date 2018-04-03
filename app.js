@@ -82,9 +82,11 @@ if (!appEnv.isLocal) {
 }
 
 // Routers
-const signup = require("./auth/signup.route");
+const signup = require("./auth/signup.router");
+const login = require("./auth/login.router");
 
 app.use("/signup", signup);
+app.use("/login", login);
 
 
 app.get("/hello", function(request,response){
