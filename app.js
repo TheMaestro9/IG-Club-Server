@@ -21,6 +21,8 @@ const util = require('util')
 
 var mysql = require('mysql');
 
+var models = require('./models');
+
 
 // serve the files out of ./public as our main files
 app.use(express.static(__dirname + '/public'));
@@ -42,8 +44,8 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 
+// if it's running in production or loacl (development)
 if (!appEnv.isLocal) {
-
   var mysql_services = services["compose-for-mysql"];
   assert(!util.isUndefined(mysql_services), "Must be bound to compose-for-mysql services");
   var credentials = mysql_services[0].credentials;
@@ -79,6 +81,11 @@ if (!appEnv.isLocal) {
   handleDisconnect();
 }
 
+// Routers
+const signup = require("./auth/signup.route");
+
+app.use("/signup", signup);
+
 
 app.get("/hello", function(request,response){
 
@@ -112,8 +119,64 @@ app.get("/query", function (request, response) {
 
   });
 });
-// start server on the specified port and binding host
-app.listen(appEnv.port, '0.0.0.0', function() {
-  // print a message when the server starts listening
-  console.log("server starting on " + appEnv.url);
+
+// error handler
+app.use(function(err, req, res, next) {
+  // set locals, only providing error in development
+  res.locals.message = err.message;
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+  // render the error page
+  res.status(err.status || 500);
+  res.json({"error": err.message});
 });
+
+
+// // start server on the specified port and binding host
+// app.listen(appEnv.port, '0.0.0.0', function() {
+//   // print a message when the server starts listening
+//   console.log("server starting on " + appEnv.url);
+//   // console.log(app.address());
+// });
+
+
+
+/* 
+ * when the app run, sequlize will chack if the tabels exist or not.
+ * if its the first run and the tables are not existing, it will create it.
+ * For more infomation about how this realy warking check these links:
+ * http://sequelize.readthedocs.io/en/1.7.0/articles/express/
+ * https://stackoverflow.com/questions/12487416/how-to-organize-a-node-app-that-uses-sequelize#13151025
+ */
+models.sequelize.sync().then(function() {
+  /**
+   * Listen on provided port, on all network interfaces.
+   */
+  app.listen(appEnv.port, function() {
+    // debug('Express server listening on port ' + appEnv.port);
+    console.log('Express server listening on port ' + appEnv.port);
+  });
+  app.on('error', onError);
+  app.on('listening', onListening);
+});
+
+
+function onError(error) {
+  if (error.syscall !== 'listen') {
+    throw error;
+  }
+}
+
+/**
+ * Event listener for HTTP server "listening" event.
+ */
+
+function onListening() {
+  var addr = app.address();
+  var bind = typeof addr === 'string'
+    ? 'pipe ' + addr
+    : 'port ' + addr.port;
+  debug('Listening on ' + bind);
+}
+
+module.exports = app;
