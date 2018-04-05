@@ -1,6 +1,25 @@
 const app = require("../app");
 const request = require("supertest");
+var models  = require('../models');
 
+// Create a user
+beforeEach(() => {
+    models.User.create({
+        username: "foo",
+        password: 'passwd',
+        email: "foo@example.com"
+    })
+});
+
+// Remove the user
+afterEach(() => {
+    models.User.destroy({
+        where: {
+            username: "foo",
+            email: "foo@example.com"
+        }
+});
+});
 
 describe("Routes /login", () => {
 
@@ -15,8 +34,10 @@ describe("Routes /login", () => {
     });
 
     it("Right respose body", async () => {
-        const response = await request(app).post('/login');
-        expect(response.body.message).toEqual("Not yet implemented");
+        const response = await request(app).post('/login')
+        .send('email', "foo@example.com")
+        .send('password', 'passwd');
+        expect(response.body.message).toEqual("success");
     });
 
     it("GET request should raise an error 401", async () => {
