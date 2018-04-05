@@ -1,3 +1,5 @@
-#node modules 
-
+# ignore node modules directory
 node_modules
+
+# ignore auth configuration
+config/passport/config.js
