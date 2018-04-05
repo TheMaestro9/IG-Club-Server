@@ -13,15 +13,23 @@ var express = require('express');
 var cfenv = require('cfenv');
 
 // create a new express server
-var app = express();
+const app = express();
 
 
 const assert = require('assert');
 const util = require('util')
 
-var mysql = require('mysql');
+const mysql = require('mysql');
 
-var models = require('./models');
+const models = require('./models');
+
+
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
+
+//load passport strategies
+//const newStrategy = 
+require("./config/passport/passport")(passport, models.User);
 
 
 // serve the files out of ./public as our main files
@@ -84,9 +92,11 @@ if (!appEnv.isLocal) {
 // Routers
 const signup = require("./auth/signup.router");
 const login = require("./auth/login.router");
+const userRouter = require("./routers/user");
 
 app.use("/signup", signup);
 app.use("/login", login);
+app.use("/user", userRouter);
 
 
 app.get("/hello", function(request,response){
