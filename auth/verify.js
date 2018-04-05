@@ -1,6 +1,6 @@
 const models = require("../models");
 const jwt = require("jsonwebtoken");
-const config = require("../config/passport/confg");
+const config = require("../config/passport/config");
 
 exports.getToken = function (user) {
     return jwt.sign(user, config.secretKey, {
