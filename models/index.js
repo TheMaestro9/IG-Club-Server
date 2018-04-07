@@ -8,8 +8,22 @@ var env       = process.env.NODE_ENV || 'development';
 var config    = require(__dirname + '/../config/config.json')[env];
 var db        = {};
 
-if (config.use_env_variable) {
+const assert = require('assert');
+const util = require('util')
+
+var cfenv = require('cfenv');
+var appEnv = cfenv.getAppEnv();
+if (!appEnv.isLocal) {
+  var services = appEnv.services;
+  var mysql_services = services["compose-for-mysql"];
+  assert(!util.isUndefined(mysql_services), "Must be bound to compose-for-mysql services");
+  
+  var credentials = mysql_services[0].credentials;
+  var sequelize = new Sequelize(credentials.uri);
+
+} else if (config.use_env_variable) {
   var sequelize = new Sequelize(process.env[config.use_env_variable], config);
+
 } else {
   var sequelize = new Sequelize(config.database, config.username, config.password, config);
 }
