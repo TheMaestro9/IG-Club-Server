@@ -6,11 +6,11 @@
 
 // This application uses express as its web server
 // for more info, see: http://expressjs.com
-var express = require('express');
+const express = require('express');
 
 // cfenv provides access to your Cloud Foundry environment
 // for more info, see: https://www.npmjs.com/package/cfenv
-var cfenv = require('cfenv');
+const cfenv = require('cfenv');
 
 // create a new express server
 const app = express();
@@ -25,24 +25,25 @@ const models = require('./models');
 
 
 const passport = require('passport');
-const LocalStrategy = require('passport-local').Strategy;
+
+// initialize the passport
+app.use(passport.initialize());
 
 //load passport strategies
-//const newStrategy = 
-require("./config/passport/passport")(passport, models.User);
+const newStrategy = require("./config/passport/passport")(passport, models.User);
 
 
 // serve the files out of ./public as our main files
 app.use(express.static(__dirname + '/public'));
 
 // get the app environment from Cloud Foundry
-var appEnv = cfenv.getAppEnv();
+const appEnv = cfenv.getAppEnv();
 
-var services = appEnv.services;
+const services = appEnv.services;
 
-var cors = require('cors');
+const cors = require('cors');
 
-var bodyParser = require('body-parser');
+const bodyParser = require('body-parser');
 
 
 app.use(cors());
@@ -93,10 +94,12 @@ if (!appEnv.isLocal) {
 const signup = require("./auth/signup.router");
 const login = require("./auth/login.router");
 const userRouter = require("./routers/user");
+const homeRouter = require("./routers/home");
 
 app.use("/signup", signup);
 app.use("/login", login);
 app.use("/user", userRouter);
+app.use("/home", homeRouter);
 
 
 app.get("/hello", function(request,response){
