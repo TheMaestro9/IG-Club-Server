@@ -1,5 +1,6 @@
 const models  = require('../models');
 const passport = require("passport");
+const Verify = require("./verify");
 
 exports.post = function(req, res, next) {
     passport.authenticate('local-signin', function(err, user, info) {
@@ -17,7 +18,7 @@ exports.post = function(req, res, next) {
               err: 'Could not log in user'
             });
           }
-            
+          
           var token = Verify.getToken(user);
           return res.status(200).json({
             status: 'Login successful!',
