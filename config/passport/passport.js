@@ -1,4 +1,6 @@
 const encrypt = require('./encrypt');
+const models = require("../../models");
+const Child = models.Child
 
 
 
@@ -30,7 +32,10 @@ module.exports = function(passport, user) {
                         // inputs must be escaped
                         email: email,
                         password: hashedPass,
-                        username: req.body.username
+                        username: req.body.username,
+                        mobile: Number(req.body.mobile),
+                        grade: req.body.grad || null,
+                        school: req.body.school
                     }
 
                     User.create(data)
@@ -40,9 +45,21 @@ module.exports = function(passport, user) {
                         }
 
                         if (newUser) {
+                            let children = req.body.children;
+                            let grade = data.grade
+                            if (!grade && children){
+                                children.forEach( child => {
+                                    child.UserId = newUser.id;
+                                    child.age = Number(child.age);
+                                    Child.create(child)
+                                    .catch( _ => {
+                                        done(null, false, {message: "Error while creating a child"})
+                                    })
+                                })
+                            }
                             return done(null, newUser);
                         }
-                    });
+                    }).catch( error => done(null, false, {message: error}))
                 }
             });
  
@@ -112,16 +129,11 @@ passport.use('local-signin', new LocalStrategy({
             }
  
  
-            var userinfo = user.get('user');
-            // console.log("\n\n the user: ")
-            // console.log(JSON.stringify(user))
-            // var userinfo = {
-            //     "id": user.id,
-            //     "username": user.username,
-            //     "email": user.email
-            // };
+            var userinfo = {
+                "id": user.id
+            };
             //console.log("\n\n userinfo: "+ JSON.stringify(userinfo[1]) + "\n\n");
-            return done(null, user);
+            return done(null, userinfo);
  
  
         }).catch(function(err) {
