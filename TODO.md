@@ -8,8 +8,9 @@
 
 ## Important
 
-- Setting HTTP headers using helmet
+- Setting HTTP headers (using helmet or lusca)
 - Authoritation (admin & regular user)
+- verify email & forgote password
 
 ## Features
 
