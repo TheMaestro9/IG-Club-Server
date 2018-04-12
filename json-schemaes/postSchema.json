@@ -1,0 +1,20 @@
+{
+    "title": "post",
+    "description": "describes properties required to make or edit a post",
+    "type": "object",
+    "properties": {
+        "title": {
+            "type": "string",
+            "description": "the titile of the post"
+        },
+        "content": {
+            "type": "string",
+            "description": "the content of the post"
+        },
+        "url": {
+            "type": "string",
+            "description": "a url for an image"
+        }
+    },
+    "required": ["title", "content"]
+}
