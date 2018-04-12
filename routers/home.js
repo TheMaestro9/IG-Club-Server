@@ -5,10 +5,12 @@ const Verify = require("../auth/verify");
 
 const postController = require("../controllers/post");
 
-router.get('/posts', Verify.verifyUser, postController.getAllPosts);
-router.post('/posts', Verify.verifyUser, postController.createPost);
+router.use("/posts", Verify.verifyUser);
 
-router.put('/posts/:postId', Verify.verifyUser, postController.editPost);
-router.delete('/posts/:postId', Verify.verifyUser, postController.deletePost);
+router.get('/posts', postController.getAllPosts);
+router.post('/posts', postController.createPost);
+
+router.put('/posts/:postId', postController.editPost);
+router.delete('/posts/:postId', postController.deletePost);
 
 module.exports = router
