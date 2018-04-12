@@ -162,7 +162,7 @@ app.use(function(err, req, res, next) {
  * For more infomation about how this realy warking check these links:
  * http://sequelize.readthedocs.io/en/1.7.0/articles/express/
  * https://stackoverflow.com/questions/12487416/how-to-organize-a-node-app-that-uses-sequelize#13151025
- */
+ **/
 models.sequelize.sync().then(function() {
   /**
    * Listen on provided port, on all network interfaces.
@@ -173,7 +173,10 @@ models.sequelize.sync().then(function() {
   });
   app.on('error', onError);
   app.on('listening', onListening);
-});
+})
+.catch(err => {
+  console.log(err)
+})
 
 
 function onError(error) {
