@@ -1,0 +1,25 @@
+{
+    "title": "newUser",
+    "description": "description properties required to make a new user",
+    "properties": {
+        "email": {
+            "type": "string"
+        },
+        "password": {
+            "type": "string"
+        },
+        "username": {
+            "type": "string"
+        },
+        "mobile": {
+            "type": "integer"
+        },
+        "school": {
+            "type": "string"
+        },
+        "grade": {
+            "type": "string"
+        }
+    },
+    "required": ["email", "password"]
+}
