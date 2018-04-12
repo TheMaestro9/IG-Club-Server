@@ -2,15 +2,16 @@
 
 ## Urgent
 
-- Input validation (use json schema.)
-- Input sinitize
-- DB migrations (try umzug)
+- Input validation (use json schema).
+- Input sinitize.
+- DB migrations (try umzug).
+- Token expiration policy.
 
 ## Important
 
-- Setting HTTP headers (using helmet or lusca)
-- Authoritation (admin & regular user)
-- verify email & forgote password
+- Setting HTTP headers (using helmet or lusca).
+- Authoritation (admin & regular user).
+- verify email & forgote password.
 
 ## Features
 
