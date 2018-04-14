@@ -13,7 +13,11 @@ module.exports = (sequelize, DataTypes) => {
     password: DataTypes.STRING,
     mobile: DataTypes.INTEGER,
     grade: DataTypes.STRING,
-    school: DataTypes.STRING
+    school: DataTypes.STRING,
+    verified: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
+    }
   });
 
   User.associate = function(models) {
