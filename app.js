@@ -97,11 +97,12 @@ const signup = require("./auth/signup.router");
 const login = require("./auth/login.router");
 const userRouter = require("./routers/user");
 const homeRouter = require("./routers/home");
-
+const coursesRouter = require('./routers/courses')
 app.use("/signup", signup);
 app.use("/login", login);
 app.use("/user", userRouter);
 app.use("/home", homeRouter);
+app.use("/courses" , coursesRouter)
 
 
 app.get("/hello", function(request,response){

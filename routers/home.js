@@ -5,9 +5,9 @@ const Verify = require("../auth/verify");
 
 const postController = require("../controllers/post");
 
-router.use("/posts", Verify.verifyUser);
+// router.use("/posts", Verify.verifyUser);
 
-router.get('/posts', postController.getAllPosts);
+router.get('/posts', Verify.verifyUser, postController.getAllPosts);
 router.post('/posts', postController.createPost);
 
 router.put('/posts/:postId', postController.editPost);
