@@ -8,9 +8,9 @@ let postSchema = require("../json-schemaes/postSchema")
 const postController = require("../controllers/post");
 
 router.get('/posts', Verify.verifyUser, postController.getAllPosts);
-router.post('/posts',validateSchema(postSchema), Verify.verifyUser, postController.createPost);
+router.post('/posts',Verify.verifyUser, validateSchema(postSchema), postController.createPost);
 
-router.put('/posts/:postId', validateSchema(postSchema), Verify.verifyUser, postController.editPost);
+router.put('/posts/:postId', Verify.verifyUser, validateSchema(postSchema), postController.editPost);
 router.delete('/posts/:postId', Verify.verifyUser, postController.deletePost);
 
 module.exports = router
