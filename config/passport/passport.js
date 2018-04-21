@@ -1,8 +1,13 @@
 const encrypt = require('./encrypt');
 const models = require("../../models");
 const Child = models.Child
+const verifyEmail = require('../../testSendMail')
 
-
+function userCreated(user, done) {
+    // send an email to the user to verify his/her email
+    verifyEmail(user)
+    return done(null, user)
+}
 
 module.exports = function(passport, user) {
  
@@ -34,7 +39,7 @@ module.exports = function(passport, user) {
                         password: hashedPass,
                         username: req.body.username,
                         mobile: Number(req.body.mobile),
-                        grade: req.body.grad || null,
+                        grade: req.body.grade || null,
                         school: req.body.school
                     }
 
@@ -47,19 +52,27 @@ module.exports = function(passport, user) {
                         if (newUser) {
                             let children = req.body.children;
                             let grade = data.grade
-                            if (!grade && children){
+                            if (grade) {
+                                userCreated(newUser, done)
+                            } else if (children) {
                                 children.forEach( child => {
                                     child.UserId = newUser.id;
                                     child.age = Number(child.age);
                                     Child.create(child)
+                                    .then()
                                     .catch( _ => {
-                                        done(null, false, {message: "Error while creating a child"})
+                                        newUser.destroy({force: true})
+                                        .then( _ => {
+                                        return done(null, false, {message: "Error while creating a child"})
+                                        })
                                     })
                                 })
+                                userCreated(newUser, done)
                             }
-                            return done(null, newUser);
                         }
-                    }).catch( error => done(null, false, {message: error}))
+                    }).catch( error => {
+                        done(null, false, {message: "error"})
+                    })
                 }
             });
  
@@ -132,14 +145,11 @@ passport.use('local-signin', new LocalStrategy({
             var userinfo = {
                 "id": user.id
             };
-            //console.log("\n\n userinfo: "+ JSON.stringify(userinfo[1]) + "\n\n");
             return done(null, userinfo);
  
  
         }).catch(function(err) {
- 
-            console.log("Error:", err);
- 
+  
             return done(null, false, {
                 message: 'Something went wrong with your Signin'
             });
