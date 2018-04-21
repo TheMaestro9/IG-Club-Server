@@ -1,6 +1,6 @@
 const models = require("../models");
 const EslCourse = models.EslCourse
-
+const EslRequests= models.EslRequests
 var response = function (res, statusCode, statusMsg, msg) {
     return res.status(statusCode)
         .json({
@@ -22,6 +22,33 @@ exports.getEsl = (req, res, next) => {
             })
         })
     .catch( error => dbFail("Faild to get posts.") )
+}
+
+exports.addEslRequest = (req , res , next) =>{
+    
+
+    var requestBody = {
+        UserId :req.userId, 
+        communicationTime: req.body.communicationTime,
+        courseArea: req.body.courseArea,
+        courseDate: req.body. courseDate
+    }
+    console.log(EslRequests.UserId)
+    EslRequests.create(requestBody)
+    .then( (newRequest, created) => {
+        if (!newRequest) {
+            return res.status(500)
+            .json({
+                success: false,
+                error: "Faild to store the Request."
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: "Your Request was submitted successfully "
+        });
+    });
 }
 
 //  exports.editEsl = (req, res, next) => {

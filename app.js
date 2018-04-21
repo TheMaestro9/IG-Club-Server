@@ -138,6 +138,26 @@ app.get("/query", function (request, response) {
   });
 });
 
+app.get('/test' ,function (request, response) {
+  var token = request.query.token;  
+  //const config = require("config/passport/config");
+  const jwt = require("jsonwebtoken");
+
+    jwt.verify(token, "12345-67890-09876-54321", function (err, decoded) {
+        if (err) {
+            var err = new Error('You are not authenticated!');   
+            err.status = 401;
+            console.log(err)
+            response.send(err)
+        } else {
+            // if everything is good, save to request for use in other routes
+            console.log(decoded) ; 
+            response.send(decoded)
+        }
+    });
+  }); 
+
+
 // error handler
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
