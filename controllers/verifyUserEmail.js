@@ -1,12 +1,9 @@
-const jwt = require('jsonwebtoken')
 const models = require("../models");
 const User = models.User
-
+const tokenDecoded = require('./tokenDecoded')
 
 module.exports = function (req, res) {
-    var token = req.body.token || req.query.token || req.headers['x-access-token'];
-    var decoded = jwt.decode(token)
-    var userId = decoded.id
+    var userId = tokenDecoded(req).id
 
     User.findById(userId).then( user => {
         return user.update({
