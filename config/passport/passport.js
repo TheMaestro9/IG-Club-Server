@@ -1,8 +1,13 @@
 const encrypt = require('./encrypt');
 const models = require("../../models");
 const Child = models.Child
+const verifyEmail = require('../../testSendMail')
 
-
+function userCreated(user, done) {
+    // send an email to the user to verify his/her email
+    verifyEmail(user)
+    return done(null, user)
+}
 
 module.exports = function(passport, user) {
  
@@ -34,7 +39,7 @@ module.exports = function(passport, user) {
                         password: hashedPass,
                         username: req.body.username,
                         mobile: Number(req.body.mobile),
-                        grade: req.body.grad || null,
+                        grade: req.body.grade || null,
                         school: req.body.school
                     }
 
@@ -47,19 +52,39 @@ module.exports = function(passport, user) {
                         if (newUser) {
                             let children = req.body.children;
                             let grade = data.grade
-                            if (!grade && children){
-                                children.forEach( child => {
-                                    child.UserId = newUser.id;
-                                    child.age = Number(child.age);
-                                    Child.create(child)
-                                    .catch( _ => {
-                                        done(null, false, {message: "Error while creating a child"})
-                                    })
-                                })
+                            
+                            if (children) {
+
+                                function incertChildren(children, UserId) {
+                                    /*
+                                    * To understand how this function works see:
+                                    * https://stackoverflow.com/questions/24660096/correct-way-to-write-loops-for-promise#24985483
+                                    **/
+                                    return children.reduce(function(promise, child) {
+                                        return promise.then(function() {
+                                            child.UserId = UserId;
+                                        child.age = Number(child.age);
+                                        return Child.create(child)
+                                        .catch( _ => {
+                                            newUser.destroy({force: true})
+                                            .then( _ => {
+                                            return done(null, false, {message: "Error while creating a child"})
+                                            })
+                                    }) 
+                                        });
+                                    }, Promise.resolve());
+                                }
+
+                                incertChildren(children, newUser.id, done)
+                                .then( userCreated(newUser, done) )
+                            } else {
+                                userCreated(newUser, done)
                             }
-                            return done(null, newUser);
                         }
-                    }).catch( error => done(null, false, {message: error}))
+                    }).catch( error => {
+                        console.log(error)
+                        done(null, false, {message: error})
+                    })
                 }
             });
  
@@ -132,14 +157,11 @@ passport.use('local-signin', new LocalStrategy({
             var userinfo = {
                 "id": user.id
             };
-            //console.log("\n\n userinfo: "+ JSON.stringify(userinfo[1]) + "\n\n");
             return done(null, userinfo);
  
  
         }).catch(function(err) {
- 
-            console.log("Error:", err);
- 
+  
             return done(null, false, {
                 message: 'Something went wrong with your Signin'
             });

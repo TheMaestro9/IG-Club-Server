@@ -1,4 +1,5 @@
 const models  = require('../models');
+const User = models.User
 const passport = require("passport");
 const Verify = require("./verify");
 
@@ -18,13 +19,25 @@ exports.post = function(req, res, next) {
               err: 'Could not log in user'
             });
           }
+
+          User.findById(user.id)
+          .then( theUser => {
+            if (theUser.verified) {
+              var token = Verify.getToken(user);
+              return res.status(200).json({
+                status: true,
+                message: 'Login successful!',
+                token: token
+              });
+            } else {
+              return res.status(401).json({
+                status: false,
+                message: 'Verify your email'
+            })
+          }
+          })
           
-          var token = Verify.getToken(user);
-          return res.status(200).json({
-            status: 'Login successful!',
-            success: true,
-            token: token
-          });
+          
         });
       })(req,res,next);
 }
