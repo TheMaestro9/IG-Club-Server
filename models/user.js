@@ -20,5 +20,10 @@ module.exports = (sequelize, DataTypes) => {
     models.User.hasMany(models.Child);
   }
 
+  User.associate = function(models) {
+    models.User.hasMany(models.EslRequests);
+  }
+
+
   return User;
 };

@@ -3,3 +3,7 @@ node_modules
 
 # ignore auth configuration
 config/passport/config.js
+
+#ignore local database cofiguration
+config/config.json
+
