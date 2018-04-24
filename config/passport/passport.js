@@ -155,7 +155,8 @@ passport.use('local-signin', new LocalStrategy({
  
  
             var userinfo = {
-                "id": user.id
+                "id": user.id,
+                "role": Boolean(user.admin)
             };
             return done(null, userinfo);
  
