@@ -52,26 +52,38 @@ module.exports = function(passport, user) {
                         if (newUser) {
                             let children = req.body.children;
                             let grade = data.grade
-                            if (grade) {
-                                userCreated(newUser, done)
-                            } else if (children) {
-                                children.forEach( child => {
-                                    child.UserId = newUser.id;
-                                    child.age = Number(child.age);
-                                    Child.create(child)
-                                    .then()
-                                    .catch( _ => {
-                                        newUser.destroy({force: true})
-                                        .then( _ => {
-                                        return done(null, false, {message: "Error while creating a child"})
-                                        })
-                                    })
-                                })
+                            
+                            if (children) {
+
+                                function incertChildren(children, UserId) {
+                                    /*
+                                    * To understand how this function works see:
+                                    * https://stackoverflow.com/questions/24660096/correct-way-to-write-loops-for-promise#24985483
+                                    **/
+                                    return children.reduce(function(promise, child) {
+                                        return promise.then(function() {
+                                            child.UserId = UserId;
+                                        child.age = Number(child.age);
+                                        return Child.create(child)
+                                        .catch( _ => {
+                                            newUser.destroy({force: true})
+                                            .then( _ => {
+                                            return done(null, false, {message: "Error while creating a child"})
+                                            })
+                                    }) 
+                                        });
+                                    }, Promise.resolve());
+                                }
+
+                                incertChildren(children, newUser.id, done)
+                                .then( userCreated(newUser, done) )
+                            } else {
                                 userCreated(newUser, done)
                             }
                         }
                     }).catch( error => {
-                        done(null, false, {message: "error"})
+                        console.log(error)
+                        done(null, false, {message: error})
                     })
                 }
             });
