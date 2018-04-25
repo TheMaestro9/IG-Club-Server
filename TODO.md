@@ -15,9 +15,12 @@
 
 ## Features
 
+- Performance Monitoring with **Prometheus**
+
 ## Testing
 
 - Test the models.
 - Test user authentication endpoint.
 - Test home post endpoint.
 - Test encyrption script.
+- look at jmeter

@@ -1,8 +1,12 @@
 const Verify = require("../auth/verify");
+const verifyEmail = require('../controllers/verifyUserEmail')
 const express = require("express");
 const checkTokenController = require("../controllers/user")
 const router = express.Router();
-router.get('/', Verify.verifyUser, function(req, res, next) {
+
+router.use('/', Verify.verifyUser)
+
+router.get('/', function(req, res, next) {
     return res.status(200)
     .json({
         status: "success",
@@ -11,8 +15,8 @@ router.get('/', Verify.verifyUser, function(req, res, next) {
 
 });
 
-router.get('/check-token', checkTokenController.checkToken);
 router.get('/user-info', checkTokenController.getUserInfo);
 
+router.get('/verify', verifyEmail)
 
 module.exports = router;
