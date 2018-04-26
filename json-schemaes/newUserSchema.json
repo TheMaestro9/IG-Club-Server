@@ -3,7 +3,8 @@
     "description": "description properties required to make a new user",
     "properties": {
         "email": {
-            "type": "string"
+            "type": "string",
+            "format": "email"
         },
         "password": {
             "type": "string"
