@@ -11,6 +11,7 @@
     "testEnvironment": "node"
   },
   "dependencies": {
+    "ajv": "^6.4.0",
     "bcrypt": "^1.0.3",
     "body-parser": "^1.15.2",
     "cfenv": "1.0.x",
