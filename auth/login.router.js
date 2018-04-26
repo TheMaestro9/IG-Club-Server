@@ -5,7 +5,10 @@ const passport = require("passport");
 const controller = require("./login.controller");
 const error = require("./errors");
 
-router.post("/", controller.post);
+let validateSchema = require('../json-schemaes/validateSchema')
+let loginSchema = require("../json-schemaes/loginSchema")
+
+router.post("/", validateSchema(loginSchema), controller.post);
 
 router.all("/", error.notPost);
 
