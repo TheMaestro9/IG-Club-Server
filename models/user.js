@@ -17,7 +17,8 @@ module.exports = (sequelize, DataTypes) => {
     verified: {
       type: DataTypes.BOOLEAN,
       defaultValue: false
-    }
+    }, 
+    admin:DataTypes.BOOLEAN
   });
 
   User.associate = function(models) {
