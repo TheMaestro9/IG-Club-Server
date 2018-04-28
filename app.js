@@ -106,7 +106,7 @@ app.use("/courses" , coursesRouter)
 
 
 
-const checkTokenController = require("../controllers/user")
+const checkTokenController = require("./controllers/user")
 app.get('/check-token', checkTokenController.checkToken);
 
 
