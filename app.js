@@ -191,10 +191,12 @@ app.use(function(err, req, res, next) {
  * https://stackoverflow.com/questions/12487416/how-to-organize-a-node-app-that-uses-sequelize#13151025
  **/
 const debug = require('debug')('express-sequelize')
+const umzug = require('./util/runMigration')
+umzug.up()
 models.sequelize.sync().then(function() {
   /**
-   * Listen on provided port, on all network interfaces.
-   */
+  * Listen on provided port, on all network interfaces.
+  */
   app.listen(appEnv.port, function() {
     debug('Express server listening on port ' + appEnv.port);
     // console.log('Express server listening on port ' + appEnv.port);
