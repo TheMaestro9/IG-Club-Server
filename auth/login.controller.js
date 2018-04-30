@@ -25,13 +25,13 @@ exports.post = function(req, res, next) {
             if (theUser.verified) {
               var token = Verify.getToken(user);
               return res.status(200).json({
-                status: true,
+                success: true,
                 message: 'Login successful!',
                 token: token
               });
             } else {
               return res.status(401).json({
-                status: false,
+                sucess: false,
                 message: 'Verify your email'
             })
           }

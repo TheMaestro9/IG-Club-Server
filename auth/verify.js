@@ -4,9 +4,11 @@ const config = require("../config/passport/config");
 
 exports.getToken = function (user) {
     return jwt.sign(user, config.secretKey, {
-        expiresIn: 3600
+        expiresIn: 3600 * 25 
     });
 };
+
+
 
 exports.verifyUser = function (req, res, next) {
     // check header or url parameters or post parameters for token

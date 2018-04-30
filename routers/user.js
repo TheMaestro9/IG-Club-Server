@@ -1,6 +1,7 @@
 const Verify = require("../auth/verify");
 const verifyEmail = require('../controllers/verifyUserEmail')
 const express = require("express");
+const checkTokenController = require("../controllers/user")
 const router = express.Router();
 
 router.use('/', Verify.verifyUser)
@@ -13,6 +14,8 @@ router.get('/', function(req, res, next) {
     });
 
 });
+
+router.get('/user-info', checkTokenController.getUserInfo);
 
 router.get('/verify', verifyEmail)
 

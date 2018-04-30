@@ -105,6 +105,12 @@ app.use("/home", homeRouter);
 app.use("/courses" , coursesRouter)
 
 
+
+const checkTokenController = require("./controllers/user")
+app.get('/check-token', checkTokenController.checkToken);
+
+
+
 app.get("/hello", function(request,response){
 
   response.send("hello"); 
