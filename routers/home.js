@@ -16,8 +16,8 @@ router.get('/posts', postController.getAllPosts);
 // Only Admis can add, edit or remove posts
 router.use(checkAdmin)
 
-router.post('/posts',validateSchema(postSchema), postController.createPost);
-router.put('/posts/:postId',validateSchema(postSchema), postController.editPost);
+router.post('/posts', postController.createPost);
+router.put('/posts/:postId', postController.editPost);
 router.delete('/posts/:postId', postController.deletePost);
 
 
