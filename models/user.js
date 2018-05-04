@@ -29,6 +29,11 @@ module.exports = (sequelize, DataTypes) => {
     models.User.hasMany(models.EslRequests);
   }
 
+  User.associate = function(models) {
+    models.User.belongsToMany(models.Courses, {
+        through:"CourseRequests"
+    });
+}
 
   return User;
 };

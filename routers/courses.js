@@ -7,8 +7,8 @@ const coursesController = require("../controllers/courses");
 
 // router.use("/posts", Verify.verifyUser);
 
-router.get('/esl', Verify.verifyUser, coursesController.getEsl);
-router.post('/esl-request', Verify.verifyUser, coursesController.addEslRequest);
+router.get('/course-info', Verify.verifyUser, coursesController.getCourseInfo);
+router.post('/course-request', Verify.verifyUser, coursesController.addCourseRequest);
 
 // router.put('/esl/', postController.editPost);
 

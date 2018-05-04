@@ -1,6 +1,6 @@
 const models = require("../models");
-const EslCourse = models.EslCourse
-const EslRequests= models.EslRequests
+const Courses = models.Courses
+const CourseRequests = models.CourseRequests
 var response = function (res, statusCode, statusMsg, msg) {
     return res.status(statusCode)
         .json({
@@ -13,8 +13,14 @@ var dbFail = msg => response(500, false, msg)
 
 var dbSuccess = msg => response(200, true, msg)
 
-exports.getEsl = (req, res, next) => {
-    EslCourse.findAll()
+exports.getCourseInfo = (req, res, next) => {
+    courseName = req.query.courseName ; 
+    console.log(courseName)
+    Courses.findAll({
+        where:{
+            name:courseName 
+        }
+    })
     .then( courseData => {
             return res.status(200).json({
                 success: true,
@@ -24,17 +30,17 @@ exports.getEsl = (req, res, next) => {
     .catch( error => dbFail("Faild to get posts.") )
 }
 
-exports.addEslRequest = (req , res , next) =>{
+exports.addCourseRequest = (req , res , next) =>{
     
 
     var requestBody = {
+        CourseId: req.body.courseId , 
         UserId :req.userId, 
         communicationTime: req.body.communicationTime,
         courseArea: req.body.courseArea,
         courseDate: req.body. courseDate
     }
-    console.log(EslRequests.UserId)
-    EslRequests.create(requestBody)
+    CourseRequests.create(requestBody)
     .then( (newRequest, created) => {
         if (!newRequest) {
             return res.status(500)
