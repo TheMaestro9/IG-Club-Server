@@ -1,15 +1,17 @@
 const express = require("express");
 const router = express.Router();
 const Verify = require("../auth/verify");
+const checkAdmin = require('../controllers/checkAdmin')
 
 
 const coursesController = require("../controllers/courses");
 
-// router.use("/posts", Verify.verifyUser);
 
 router.get('/course-info', Verify.verifyUser, coursesController.getCourseInfo);
+
+router.use(checkAdmin)
+router.put('/edit-course', Verify.verifyUser, coursesController.editCourse);
 router.post('/course-request', Verify.verifyUser, coursesController.addCourseRequest);
 
-// router.put('/esl/', postController.editPost);
 
 module.exports = router

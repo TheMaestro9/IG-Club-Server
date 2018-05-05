@@ -99,12 +99,14 @@ const userRouter = require("./routers/user");
 const homeRouter = require("./routers/home");
 const coursesRouter = require('./routers/courses');
 const booksRouter = require('./routers/books')
+const universitiesRouter = require('./routers/universities')
 app.use("/signup", signup);
 app.use("/login", login);
 app.use("/user", userRouter);
 app.use("/home", homeRouter);
 app.use("/courses" , coursesRouter)
 app.use("/books" , booksRouter);
+app.use("/universities" ,universitiesRouter)
 
 
 const checkTokenController = require("./controllers/user")
