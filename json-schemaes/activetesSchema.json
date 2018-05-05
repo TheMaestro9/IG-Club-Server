@@ -1,0 +1,15 @@
+{
+    "title": "activetes",
+    "description": "properities require for activetes",
+    "properties": {
+        "title": {"type": "string"},
+        "content": {"type": "string"},
+        "imageUrl": {
+            "type": "string",
+            "format": "uri-reference",
+            "description": "a url for an image"
+        },
+        "type": {"type": "string"}
+    },
+    "required": ["title", "content", "type"]
+}
