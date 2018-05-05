@@ -41,10 +41,6 @@ module.exports = (sequelize, DataTypes) => {
   }
 
   User.associate = function(models) {
-    models.User.hasMany(models.EslRequests)
-  }
-
-  User.associate = function(models) {
     models.User.belongsToMany(models.Activity, { through: 'Interests'})
   }
   
