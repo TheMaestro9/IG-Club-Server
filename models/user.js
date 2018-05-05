@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-          isEmail: true
+        isEmail: true
       }
     },
     password: DataTypes.STRING,
@@ -17,23 +17,23 @@ module.exports = (sequelize, DataTypes) => {
     verified: {
       type: DataTypes.BOOLEAN,
       defaultValue: false
-    }, 
-    admin:DataTypes.BOOLEAN
+    },
+    admin: DataTypes.BOOLEAN
   });
 
-  User.associate = function(models) {
+  User.associate = function (models) {
     models.User.hasMany(models.Child);
   }
 
-  User.associate = function(models) {
-    models.User.hasMany(models.EslRequests);
-  }
-
-  User.associate = function(models) {
+  User.associate = function (models) {
     models.User.belongsToMany(models.Courses, {
-        through:"CourseRequests"
+      through: "CourseRequests"
     });
-}
-
+  }
+  User.associate = function (models) {
+    models.User.belongsToMany(models.Books, {
+      through: "BookRequests"
+    });
+  }
   return User;
 };
