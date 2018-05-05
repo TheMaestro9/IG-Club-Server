@@ -1,0 +1,8 @@
+{
+    "title": "activetes",
+    "description": "properities require for activetes",
+    "properties": {
+        "interest": {"type": "boolean"}
+    },
+    "required": ["interest"]
+}

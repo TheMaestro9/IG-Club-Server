@@ -28,7 +28,7 @@ exports.createPost = (req, res, next) => {
     var postBody = {
         title: req.body.title,
         content: req.body.content,
-        url: req.body.url || null
+        imageUrl: req.body.url || null
     }
     Post.create(postBody)
     .then( (newPost, created) => {

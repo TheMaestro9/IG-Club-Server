@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false
         },
         content: DataTypes.TEXT,
-        url: DataTypes.STRING
+        imageUrl: DataTypes.STRING
     });
 
     return Post

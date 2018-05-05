@@ -35,5 +35,18 @@ module.exports = (sequelize, DataTypes) => {
       through: "BookRequests"
     });
   }
+
+  User.associate = function(models) {
+    models.User.hasMany(models.Child)
+  }
+
+  User.associate = function(models) {
+    models.User.hasMany(models.EslRequests)
+  }
+
+  User.associate = function(models) {
+    models.User.belongsToMany(models.Activity, { through: 'Interests'})
+  }
+  
   return User;
 };
