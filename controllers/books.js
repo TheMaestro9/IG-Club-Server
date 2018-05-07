@@ -52,6 +52,8 @@ exports.getBooksToAdmin = (req, res, next) => {
 
 exports.addBook = (req, res, next) => {
 
+    console.log("in ADD BOOOK ")
+
     var imgUrl = req.body.imgUrl; 
     if(imgUrl == null || imgUrl ==""){
         imgUrl = "assets/imgs/default-book.jpg"
@@ -62,7 +64,7 @@ exports.addBook = (req, res, next) => {
         category:req.body.category,
         paymentMethod:req.body.paymentMethod, 
         bookCondition:req.body.bookCondition, 
-        price: req.body.price , 
+        price: parseInt(req.body.price) , 
         byAdmin: req.body.byAdmin, 
         imgUrl: imgUrl,
         UserId: req.userId 
