@@ -28,7 +28,7 @@ exports.createUniversity = (req, res, next) => {
 
     var imgUrl = req.body.imgUrl; 
     if(imgUrl == null || imgUrl ==""){
-        imgUrl = "assets/imgs/default-book.jpg"
+        imgUrl = "https://www.ura-hq.org/wp-content/uploads/2016/05/xURA_HOMEPAGE_IMAGE8.jpg.pagespeed.ic.f2xMPH5QGx.jpg"
     }    
     var universityBody = {
         description: req.body.description, 
