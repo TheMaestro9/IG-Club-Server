@@ -25,11 +25,13 @@ exports.getAllPosts = (req, res, next) => {
 }
 
 exports.createPost = (req, res, next) => {
-    var postBody = {
-        title: req.body.title,
-        content: req.body.content,
-        imageUrl: req.body.url || null
-    }
+    var postBody = req.body ; 
+    console.log(postBody)
+    // var postBody = {
+    //     title: req.body.title,
+    //     content: req.body.content,
+    //     imageUrl: req.body.url || null
+    // }
     Post.create(postBody)
     .then( (newPost, created) => {
         if (!newPost) {

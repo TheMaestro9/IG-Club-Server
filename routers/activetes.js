@@ -12,8 +12,10 @@ const interestSchema = require('../json-schemaes/interestActivitySchema')
 router.use(Verify.verifyUser);
 
 router.get("/", controllers.getActivities)
-// router.get("/interest", controllers.getInterest)
+router.get("/user-interests", controllers.getUserInterests)
 router.post("/:activityId/interest",  controllers.interestActivity)
+router.delete("/:activityId/remove-interest",  controllers.removeInterest)
+
 
 // Only Admis can add, edit or remove posts
 router.use(checkAdmin)

@@ -50,6 +50,17 @@ exports.getBooksToAdmin = (req, res, next) => {
     .catch( error => dbFail("Faild to get posts.") )
 }
 
+exports.getBookRequests= (req , res , next)=>{ 
+    BookRequests.findAll()
+    .then(bookRequests=>{ 
+        return res.status(200).json({
+            success: true,
+            bookRequests: bookRequests
+        })
+    })
+
+}
+
 exports.addBook = (req, res, next) => {
 
     console.log("in ADD BOOOK ")
@@ -58,17 +69,9 @@ exports.addBook = (req, res, next) => {
     if(imgUrl == null || imgUrl ==""){
         imgUrl = "assets/imgs/default-book.jpg"
     }
-    var book = {
-        bookTitle: req.body.bookTitle,
-        ISBN: req.body.ISBN,
-        category:req.body.category,
-        paymentMethod:req.body.paymentMethod, 
-        bookCondition:req.body.bookCondition, 
-        price: parseInt(req.body.price) , 
-        byAdmin: req.body.byAdmin, 
-        imgUrl: imgUrl,
-        UserId: req.userId 
-    }
+    var book = req.body 
+    book['UserId'] =  req.userId;
+    book.imgUrl = imgUrl ; 
 
     console.log(book)
     Books.create(book)
@@ -86,67 +89,34 @@ exports.addBook = (req, res, next) => {
             message: "The book successfuly added"
         });
     });
+}
+ exports.editBook  = (req, res, next) => {
+    var newBook = req.body ; 
+     let bookId = req.body.BookId
+     Post.findById(BookId)
+     .then( book => {
+        book.update(newBook)
+        .then(success => {
+            return res.status(200)
+            .json({
+                success: true,
+                message: "The book successfuly updated."
+            })
+        })
+        .catch( _ => {
+            return res.status(500)
+        .json({
+            success: false,
+            message: "Can not update the book."
+        })
+        })
+    })
+    .catch(error => {
+        return res.status(500)
+        .json({
+            success: false,
+            message: "This book does not exist."
+        })
+    })
  }
-
-// exports.addCourseRequest = (req , res , next) =>{
-    
-
-//     var requestBody = {
-//         CourseId: req.body.courseId , 
-//         UserId :req.userId, 
-//         communicationTime: req.body.communicationTime,
-//         courseArea: req.body.courseArea,
-//         courseDate: req.body. courseDate
-//     }
-//     CourseRequests.create(requestBody)
-//     .then( (newRequest, created) => {
-//         if (!newRequest) {
-//             return res.status(500)
-//             .json({
-//                 success: false,
-//                 error: "Faild to store the Request."
-//             });
-//         }
-
-//         return res.status(200).json({
-//             success: true,
-//             message: "Your Request was submitted successfully "
-//         });
-//     });
-// }
-
-//  exports.editEsl = (req, res, next) => {
-//     var postBody = {
-//         title: req.body.title,
-//         content: req.body.content,
-//         url: req.body.url || null
-//     }
-
-//      let postId = req.params.postId
-//      Post.findById(postId)
-//      .then( post => {
-//         post.update(postBody)
-//         .then(success => {
-//             return res.status(200)
-//             .json({
-//                 success: true,
-//                 message: "The post successfuly updated."
-//             })
-//         })
-//         .catch( _ => {
-//             return res.status(500)
-//         .json({
-//             success: false,
-//             message: "Can not update the post."
-//         })
-//         })
-//     })
-//     .catch(error => {
-//         return res.status(500)
-//         .json({
-//             success: false,
-//             message: "This Post does not exist."
-//         })
-//     })
-//  }
 

@@ -1,15 +1,20 @@
 const express = require("express");
 const router = express.Router();
 const Verify = require("../auth/verify");
+const checkAdmin = require('../controllers/checkAdmin')
 
 
 const booksController = require("../controllers/books");
 
-router.post('/add-book',Verify.verifyUser, booksController.addBook);
-router.get('/books-for-user', Verify.verifyUser, booksController.getBooksToUser);
-router.get('/books-for-admin', Verify.verifyUser, booksController.getBooksToAdmin);
+router.use(Verify.verifyUser)
+router.get('/books-for-user', booksController.getBooksToUser);
+router.get('/book-requests', booksController.getBookRequests);
 
-// router.post('/course-request', Verify.verifyUser, coursesController.addCourseRequest);
+
+router.use(checkAdmin)
+router.get('/books-for-admin', booksController.getBooksToAdmin);
+router.post('/add-book', booksController.addBook);
+router.put('/edit-book' , booksController.editBook); 
 
 
 module.exports = router

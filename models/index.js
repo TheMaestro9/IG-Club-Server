@@ -13,6 +13,7 @@ const util = require('util')
 
 var cfenv = require('cfenv');
 var appEnv = cfenv.getAppEnv();
+
 if (!appEnv.isLocal) {
   var services = appEnv.services;
   var mysql_services = services["compose-for-mysql"];

@@ -23,6 +23,7 @@ exports.checkToken = (req, res) => {
 
 exports.getUserInfo =(req,res)=>{
 
+    console.log("IN NORMAL GET USER INFO")
     var token = req.query.token; 
     var payload = jwt.decode(token);
     var userId = payload.id ; 

@@ -18,7 +18,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.BOOLEAN,
       defaultValue: false
     },
-    admin: DataTypes.BOOLEAN
+    admin:{
+      type: DataTypes.BOOLEAN , 
+      defaultValue: false 
+    } 
   });
 
   User.associate = function (models) {

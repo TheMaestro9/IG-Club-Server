@@ -56,41 +56,41 @@ app.use(logger('dev'))
 
 
 // if it's running in production or loacl (development)
-if (!appEnv.isLocal) {
-  var mysql_services = services["compose-for-mysql"];
-  assert(!util.isUndefined(mysql_services), "Must be bound to compose-for-mysql services");
-  var credentials = mysql_services[0].credentials;
+// if (!appEnv.isLocal) {
+//   var mysql_services = services["compose-for-mysql"];
+//   assert(!util.isUndefined(mysql_services), "Must be bound to compose-for-mysql services");
+//   var credentials = mysql_services[0].credentials;
 
-  var connectionString = credentials.uri;
+//   var connectionString = credentials.uri;
 
 
 
-  function handleDisconnect() {
-    connection = mysql.createConnection(credentials.uri); // Recreate the connection, since
-    // the old one cannot be reused.
+//   function handleDisconnect() {
+//     connection = mysql.createConnection(credentials.uri); // Recreate the connection, since
+//     // the old one cannot be reused.
 
-    connection.connect(function (err) {              // The server is either down
-      if (err) {                                     // or restarting (takes a while sometimes).
-        console.log('error when connecting to db:', err);
-        setTimeout(handleDisconnect, 2000); // We introduce a delay before attempting to reconnect,
-      } 
-      else{
-        console.log('connected to the Data Base')
-      }                                    // to avoid a hot loop, and to allow our node script to
-    });                                     // process asynchronous requests in the meantime.
-    // If you're also serving http, display a 503 error.
-    connection.on('error', function (err) {
-      console.log('db error', err);
-      if (err.code === 'PROTOCOL_CONNECTION_LOST') { // Connection to the MySQL server is usually
-        handleDisconnect();                         // lost due to either server restart, or a
-      } else {                                      // connnection idle timeout (the wait_timeout
-        throw err;                                  // server variable configures this)
-      }
-    });
-  }
+//     connection.connect(function (err) {              // The server is either down
+//       if (err) {                                     // or restarting (takes a while sometimes).
+//         console.log('error when connecting to db:', err);
+//         setTimeout(handleDisconnect, 2000); // We introduce a delay before attempting to reconnect,
+//       } 
+//       else{
+//         console.log('connected to the Data Base')
+//       }                                    // to avoid a hot loop, and to allow our node script to
+//     });                                     // process asynchronous requests in the meantime.
+//     // If you're also serving http, display a 503 error.
+//     connection.on('error', function (err) {
+//       console.log('db error', err);
+//       if (err.code === 'PROTOCOL_CONNECTION_LOST') { // Connection to the MySQL server is usually
+//         handleDisconnect();                         // lost due to either server restart, or a
+//       } else {                                      // connnection idle timeout (the wait_timeout
+//         throw err;                                  // server variable configures this)
+//       }
+//     });
+//   }
 
-  handleDisconnect();
-}
+//   handleDisconnect();
+// }
 
 // Routers
 const signup = require("./auth/signup.router");
@@ -100,7 +100,6 @@ const homeRouter = require("./routers/home");
 const coursesRouter = require('./routers/courses');
 const booksRouter = require('./routers/books')
 const universitiesRouter = require('./routers/universities')
-const coursesRouter = require('./routers/courses')
 const activetesRouter = require('./routers/activetes')
 
 app.use("/signup", signup);
@@ -170,6 +169,12 @@ app.get('/test' ,function (request, response) {
     });
   }); 
 
+  app.get("*" , function (req , res){
+    console.log("CANNOT GETTTT")
+    console.log(req)
+    res.send("eh da ya man enta a7wal wla eh")
+  })
+
 
 // error handler
 app.use(function(err, req, res, next) {
@@ -204,8 +209,8 @@ app.use(function(err, req, res, next) {
  * https://stackoverflow.com/questions/12487416/how-to-organize-a-node-app-that-uses-sequelize#13151025
  **/
 const debug = require('debug')('express-sequelize')
-const umzug = require('./util/runMigration')
-umzug.up()
+// const umzug = require('./util/runMigration')
+// umzug.up()
 models.sequelize.sync().then(function() {
   /**
   * Listen on provided port, on all network interfaces.
