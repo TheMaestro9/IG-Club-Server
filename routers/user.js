@@ -9,7 +9,7 @@ let emailSchema = require("../json-schemaes/emailSchema")
 let passwordSchema = require("../json-schemaes/passwordSchema")
 
 //router.post('/forgotPassword',validateSchema(emailSchema), userController.forgotPass)
-//router.post('/verify', validateSchema(emailSchema), userController.reVerifyMail)
+router.post('/verify', validateSchema(emailSchema), userController.reVerifyMail)
 
 router.use('/', Verify.verifyUser)
 
