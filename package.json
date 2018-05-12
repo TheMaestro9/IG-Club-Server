@@ -9,6 +9,7 @@
     "ajv": "^6.4.0",
     "bcrypt": "^1.0.3",
     "body-parser": "^1.15.2",
+    "cf-deployment-tracker-client": "*",
     "cfenv": "1.0.x",
     "cors": "^2.8.4",
     "debug": "^3.1.0",
@@ -22,8 +23,7 @@
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
     "sequelize": "^4.37.5",
-    "umzug": "^2.0.1",
-    "cf-deployment-tracker-client": "*"
+    "sequelize-cli": "^4.0.0"
   },
   "repository": {},
   "engines": {
