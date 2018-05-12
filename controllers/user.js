@@ -4,6 +4,15 @@ const User = models.User
 const sendMail = require('../testSendMail')
 const tokenDecoded = require('./tokenDecoded')
 const passwdEncrypt = require('../config/passport/encrypt')
+const crypto = require('crypto')
+
+function randomStr() {
+    let randStr = crypto.randomBytes(4).toString('hex')
+    return randStr
+}
+
+function updateUserPass(User) {
+}
 
 
 exports.checkToken = (req, res) => {
@@ -73,6 +82,28 @@ exports.forgotPassword = (req, res) => {
 }
 
 exports.newPassword = (req, res) => {
+    let newPass = randomStr()
+    let hashedPass = passwdEncrypt.getHash(newPass)
+    let userId = tokenDecoded(req).id
+    User.findById(userId)
+    .then(user => {
+        user.update({'password': hashedPass})
+        .then(success => {
+            if (!success) {
+                return res.status(500)
+                .json({
+                    "success": false,
+                    "message": "Error while updating the password"
+                })
+            }
+            sendMail.newPassword(user, newPass)
+            return res.status(200)
+            .json({
+                "success": true,
+                "message": "Your password successfuly changed. check your email to see the new password"
+            })
+        })
+    })
 }
 
 exports.reVerifyMail = (req, res) => {

@@ -8,7 +8,7 @@ let validateSchema = require('../json-schemaes/validateSchema')
 let emailSchema = require("../json-schemaes/emailSchema")
 let passwordSchema = require("../json-schemaes/passwordSchema")
 
-//router.post('/forgotPassword',validateSchema(emailSchema), userController.forgotPass)
+router.post('/forgot_password',validateSchema(emailSchema), userController.forgotPassword)
 router.post('/verify', validateSchema(emailSchema), userController.reVerifyMail)
 
 router.use('/', Verify.verifyUser)
@@ -20,6 +20,6 @@ router.get('/user-info', userController.getUserInfo);
 router.delete('/',validateSchema(passwordSchema), userController.removeUser)
 
 router.get('/verify', verifyEmail)
-//router.get('/forgotPassword', userController.newPassword)
+router.get('/forgotPassword', userController.newPassword)
 
 module.exports = router;

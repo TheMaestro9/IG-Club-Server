@@ -16,7 +16,7 @@ exports.forgotPass = function(User) {
         email: User.email,
         subject: "Testing forgot password",
         content: `go to this linke to verify your email\n
-            /user/verify/?token=${token}\n
+            /user/forgotPassword/?token=${token}\n
         this link will expire after 6 hours.`
     }
 
@@ -43,7 +43,7 @@ exports.newPassword = function (User, newPass) {
     let msg = {
         email: User.email,
         subject: "Forgot Password",
-        content: ``
+        content: `Your new password is \'${newPass}\' please change your password after login`
     }
 
     sendMsg(User, msg)
