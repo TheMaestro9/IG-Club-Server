@@ -1,0 +1,11 @@
+{
+    "title": "login",
+    "description": "description email input",
+    "properties": {
+        "email": {
+            "type": "string",
+            "format": "email"
+        }
+    },
+    "required": ["email"]
+}
