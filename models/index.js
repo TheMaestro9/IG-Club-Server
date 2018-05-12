@@ -11,6 +11,7 @@ var db        = {};
 const assert = require('assert');
 const util = require('util')
 
+console.log("in index")
 var cfenv = require('cfenv');
 var appEnv = cfenv.getAppEnv();
 

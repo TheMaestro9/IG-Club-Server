@@ -1,14 +1,9 @@
 {
   "name": "NodejsStarterApp",
   "version": "0.0.1",
-  "private": true,
   "scripts": {
     "start": "node app.js",
-    "test": "jest",
     "monitor": "nodemon app.js"
-  },
-  "jest": {
-    "testEnvironment": "node"
   },
   "dependencies": {
     "ajv": "^6.4.0",
@@ -35,9 +30,6 @@
     "node": "8.9.3"
   },
   "devDependencies": {
-    "sequelize-cli": "^4.0.0",
-    "jest": "^22.4.3",
-    "nodemon": "^1.17.3",
-    "supertest": "^3.0.0"
+    "nodemon": "^1.17.3"
   }
 }

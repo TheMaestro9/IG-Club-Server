@@ -12,7 +12,6 @@ const interestSchema = require('../json-schemaes/interestActivitySchema')
 router.use(Verify.verifyUser);
 
 router.get("/", controllers.getActivities)
-router.get("/user-interests", controllers.getUserInterests)
 router.post("/:activityId/interest",  controllers.interestActivity)
 router.delete("/:activityId/remove-interest",  controllers.removeInterest)
 
@@ -23,5 +22,7 @@ router.use(checkAdmin)
 router.post("/", controllers.addActivity)
 router.put("/:activityId", controllers.editActivity)
 router.delete("/:activityId", controllers.deleteActivity)
+router.get("/user-interests", controllers.getUserInterests)
+
 
 module.exports = router

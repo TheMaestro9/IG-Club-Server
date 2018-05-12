@@ -30,7 +30,7 @@ const passport = require('passport');
 // initialize the passport
 app.use(passport.initialize());
 
-//load passport strategies
+// //load passport strategies
 const newStrategy = require("./config/passport/passport")(passport, models.User);
 
 
@@ -52,7 +52,10 @@ app.use(bodyParser.urlencoded({
   extended: false
 }));
 app.use(bodyParser.json());
-app.use(logger('dev'))
+
+
+var port = process.env.PORT || 6001;
+//app.use(logger('dev'))
 
 
 // if it's running in production or loacl (development)
@@ -100,7 +103,7 @@ const homeRouter = require("./routers/home");
 const coursesRouter = require('./routers/courses');
 const booksRouter = require('./routers/books')
 const universitiesRouter = require('./routers/universities')
-const activetesRouter = require('./routers/activetes')
+const activitiesRouter = require('./routers/activities')
 
 app.use("/signup", signup);
 app.use("/login", login);
@@ -109,7 +112,7 @@ app.use("/home", homeRouter);
 app.use("/courses" , coursesRouter)
 app.use("/books" , booksRouter);
 app.use("/universities" ,universitiesRouter)
-app.use("/activeties", activetesRouter)
+app.use("/activities", activitiesRouter)
 
 
 const checkTokenController = require("./controllers/user")
@@ -208,15 +211,16 @@ app.use(function(err, req, res, next) {
  * http://sequelize.readthedocs.io/en/1.7.0/articles/express/
  * https://stackoverflow.com/questions/12487416/how-to-organize-a-node-app-that-uses-sequelize#13151025
  **/
-const debug = require('debug')('express-sequelize')
-// const umzug = require('./util/runMigration')
-// umzug.up()
-models.sequelize.sync().then(function() {
+
+// const debug = require('debug')('express-sequelize')
+// // const umzug = require('./util/runMigration')
+// // umzug.up()
+models.sequelize.sync({force:false}).then(function() {
   /**
   * Listen on provided port, on all network interfaces.
   */
-  app.listen(appEnv.port, function() {
-    debug('Express server listening on port ' + appEnv.port);
+  app.listen(port, function() {
+    //debug('Express server listening on port ' + appEnv.port);
     // console.log('Express server listening on port ' + appEnv.port);
   });
   app.on('error', onError);
@@ -245,4 +249,4 @@ function onListening() {
   debug('Listening on ' + bind);
 }
 
-module.exports = app;
+//module.exports = app;

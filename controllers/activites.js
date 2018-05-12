@@ -4,6 +4,7 @@ const Interests = models.Interests
 const User = models.User
 const Op = models.Sequelize.Op
 const tokenDecoded = require("./tokenDecoded")
+const db = require("../db")
 
 exports.addActivity = function (req, res, next) {
     let ActivityBody = {
@@ -161,18 +162,18 @@ exports.removeInterest = function (req, res, next) {
         })
 }
 
-AddInterestedField = function(userActiveties , activities) { 
+AddInterestedField = function (userActiveties, activities) {
 
-    for( var j = 0  ; j < activities.length ; j ++ ) {
+    for (var j = 0; j < activities.length; j++) {
         console.log("oh my")
-        activity = activities[j]['dataValues']; 
-        activity['interested'] = false ; 
-        for( var i =0 ; i < userActiveties.length; i ++){
-            userActivity = userActiveties[i]['dataValues']; 
-            if (activity.id == userActivity.id){ 
+        activity = activities[j]['dataValues'];
+        activity['interested'] = false;
+        for (var i = 0; i < userActiveties.length; i++) {
+            userActivity = userActiveties[i]['dataValues'];
+            if (activity.id == userActivity.id) {
                 console.log('deep')
-                activity.interested= true ; 
-                break ;
+                activity.interested = true;
+                break;
 
             }
         }
@@ -186,20 +187,20 @@ exports.getActivities = function (req, res, next) {
     const type = req.query.type;
     User.findById(userId)
         .then(user => {
-            user.getActivities({attributes:["id"]})
+            user.getActivities({ attributes: ["id"] })
                 .then(userActiveties => {
-                    Activity.findAll( {
-                        where:{ "type" : type}
+                    Activity.findAll({
+                        where: { "type": type }
                     })
                         .then(activeties => {
 
-                            activeties = AddInterestedField( userActiveties , activeties)
-                                return res.status(200)
+                            activeties = AddInterestedField(userActiveties, activeties)
+                            return res.status(200)
                                 .json({
                                     success: true,
                                     "activeties": activeties
                                 })
-                            
+
                         })
 
 
@@ -215,13 +216,28 @@ exports.getActivities = function (req, res, next) {
         .catch()
 }
 
-exports.getUserInterests= function(req , res , next){ 
-    Interests.findAll()
-    .then(userInterests=>{ 
-        return res.status(200).json({
-            success: true,
-            userInterests: userInterests
-        })
+exports.getUserInterests = function (req, res, next) {
+    // Interests.findAll()
+    //     .then(userInterests => {
+    //         return res.status(200).json({
+    //             success: true,
+    //             userInterests: userInterests
+    //         })
+    //     })
+    var qString = "select date_format(i.updatedAt , '%a %d %b %Y') as requestDate, username , mobile "+
+                  " , email , UserId , ActivityId , a.title , a.type  from Interests i, Users u , Activities a "+
+                    " where u.id = i.UserId and i.ActivityId = a.id group by a.type" ; 
+    db.query( qString, function (err, userInterests) {
+        if (err) {
+            console.log(err)
+            res.send({ success: false })
+        }
+        else {
+            return res.status(200).json({
+                success: true,
+                userInterests: userInterests
+            }) 
+        }
     })
 
 }
