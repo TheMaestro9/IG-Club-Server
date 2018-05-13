@@ -9,11 +9,11 @@ const booksController = require("../controllers/books");
 router.use(Verify.verifyUser)
 router.get('/books-for-user', booksController.getBooksToUser);
 router.get('/book-requests', booksController.getBookRequests);
+router.post('/add-book', booksController.addBook);
 
 
 router.use(checkAdmin)
 router.get('/books-for-admin', booksController.getBooksToAdmin);
-router.post('/add-book', booksController.addBook);
 router.put('/edit-book' , booksController.editBook); 
 
 

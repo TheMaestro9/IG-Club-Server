@@ -1,6 +1,9 @@
 const models = require("../models");
 const Courses = models.Courses
-const CourseRequests = models.CourseRequests
+const User = models.User
+const db = require("../db")
+
+
 var response = function (res, statusCode, statusMsg, msg) {
     return res.status(statusCode)
         .json({
@@ -36,10 +39,10 @@ exports.editCourse = (req, res, next) => {
         description: req.body.description,
         currentPeriod: req.body.currentPeriod,
         nextRound: req.body.nextRound,
-        cost: req.body.cost 
+        cost: req.body.cost
     }
     let courseId = req.body.id
-    console.log("recived id : " , courseId)
+    console.log("recived id : ", courseId)
     Courses.findById(courseId)
         .then(course => {
             course.update(courseBody)
@@ -69,63 +72,94 @@ exports.editCourse = (req, res, next) => {
 
 exports.addCourseRequest = (req, res, next) => {
 
-
-    var requestBody = {
-        CourseId: req.body.courseId,
-        UserId: req.userId,
+    CourseId = req.body.courseId;
+    UserId = req.userId;
+    requestBody = {
         communicationTime: req.body.communicationTime,
         courseArea: req.body.courseArea,
         courseDate: req.body.courseDate
     }
-    CourseRequests.create(requestBody)
-        .then((newRequest, created) => {
-            if (!newRequest) {
-                return res.status(500)
-                    .json({
+    Courses.findById(CourseId)
+        .then(course => {
+            User.findById(UserId)
+                .then(user => {
+                    course.addUser(user, {
+                        through: requestBody
+                    })
+                        .then(_ => {
+                            return res.status(200)
+                                .json({
+                                    success: true,
+                                    message: "the Request was submitted succesfully"
+                                })
+                        })
+                }).catch(error => {
+                    console.log(error); 
+                    return res.status(500)
+                    json({
                         success: false,
-                        error: "Faild to store the Request."
-                    });
-            }
+                        message: "This Course does not exist."
+                    })
 
-            return res.status(200).json({
-                success: true,
-                message: "Your Request was submitted successfully "
-            });
-        });
+                })
+        })
+        .catch(error => {
+            return res.status(500)
+            json({
+                success: false,
+                message: "This Course does not exist."
+            })
+        })
 }
 
-//  exports.editEsl = (req, res, next) => {
-//     var postBody = {
-//         title: req.body.title,
-//         content: req.body.content,
-//         url: req.body.url || null
-//     }
 
-//      let postId = req.params.postId
-//      Post.findById(postId)
-//      .then( post => {
-//         post.update(postBody)
-//         .then(success => {
-//             return res.status(200)
-//             .json({
-//                 success: true,
-//                 message: "The post successfuly updated."
-//             })
-//         })
-//         .catch( _ => {
-//             return res.status(500)
-//         .json({
-//             success: false,
-//             message: "Can not update the post."
-//         })
-//         })
-//     })
-//     .catch(error => {
-//         return res.status(500)
-//         .json({
-//             success: false,
-//             message: "This Post does not exist."
-//         })
-//     })
-//  }
+exports.removeRequestByAdmin = function (req, res, next) {
+    let userId = req.params.userId 
+    let courseId = req.params.courseId
+    Courses.findById(courseId)
+        .then(course => {
+            User.findById(userId)
+                .then(user => {
+                    course.removeUsers([user])
+                        .then(_ => {
+                            return res.status(200)
+                                .json({
+                                    success: true,
+                                    message: "relation removed successfully!"
+                                })
+                        })
+                })
+        })
+        .catch(error => {
+            return res.status(500)
+            json({
+                success: false,
+                message: "This course does not exist."
+            })
+        })
+}
+
+
+exports.getUserRequests = function (req, res, next) {
+    
+    var qString = "select date_format(r.courseDate , '%a %d %b %Y') as requestDate, username , mobile "+
+                  " , email , UserId , CourseId as RelatedTableId , c.name as title , communicationTime , courseArea"+
+                  "  from CourseRequests r, Users u , Courses c "+
+                    " where u.id = r.UserId and r.CourseId = c.id" ; 
+    db.query( qString, function (err, userInterests) {
+        if (err) {
+            console.log(err)
+            res.send({ success: false })
+        }
+        else {
+            return res.status(200).json({
+                success: true,
+                moreDetails:true, 
+                userRequests: userInterests
+            }) 
+        }
+    })
+
+}
+
 
