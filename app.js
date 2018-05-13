@@ -214,8 +214,6 @@ app.use(function(err, req, res, next) {
  **/
 
 // const debug = require('debug')('express-sequelize')
-// // const umzug = require('./util/runMigration')
-// // umzug.up()
 models.sequelize.sync({force:false}).then(function() {
   /**
   * Listen on provided port, on all network interfaces.

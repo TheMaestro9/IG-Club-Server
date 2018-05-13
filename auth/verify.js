@@ -9,6 +9,11 @@ exports.getToken = function (user) {
 };
 
 
+exports.getShortToken = function (user) {
+    return jwt.sign(user, config.secretKey, {
+        expiresIn: 3600 * 6
+    });
+};
 
 exports.verifyUser = function (req, res, next) {
     // check header or url parameters or post parameters for token

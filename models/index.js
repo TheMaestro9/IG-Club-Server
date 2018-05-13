@@ -5,7 +5,14 @@ var path      = require('path');
 var Sequelize = require('sequelize');
 var basename  = path.basename(__filename);
 var env       = process.env.NODE_ENV || 'development';
-var config    = require(__dirname + '/../config/config.json')[env];
+
+// db config file can be js file or json file
+try{
+    var config    = require(__dirname + '/../config/config.json')[env];
+} catch(_) {
+    var config    = require(__dirname + '/../config/config.js')[env];
+}
+
 var db        = {};
 
 const assert = require('assert');
