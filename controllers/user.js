@@ -40,10 +40,21 @@ exports.getUserInfo =(req,res)=>{
 
     User.findById(userId)
     .then( user => {
+        let userInfo = {
+            "id": user.id,
+            "username": user.username,
+            "email": user.email,
+            "mobile": user.mobile,
+            "school": user.school,
+            "grade": user.grade,
+            "createdAt": user.createdAt,
+            "updatedAt": user.updatedAt
+        }
+
         return res.status(200)
        .json({
            success: true,
-           userInfo: user
+           "userInfo": userInfo
        });
    
    })
@@ -130,6 +141,44 @@ exports.reVerifyMail = (req, res) => {
 }
 
 exports.updateUserInfo = (req, res) => {
+    let userId = tokenDecoded(req).id
+    let passwd = req.body.password
+    let userInfo = {
+        "email": req.body.email,
+        "username": req.body.username,
+        "mobile": Number(req.body.mobile),
+        "grade": req.body.grade || null,
+        "school": req.body.school
+    }
+
+    User.findById(userId)
+    .then(user => {
+        let validPass = passwdEncrypt.checkHash(passwd, user.password)
+        if (!validPass) {
+            return res.status(403)
+                .json({
+                    success: false,
+                    message: "Wrong password"
+                })
+        } else {
+            user.update(userInfo)
+            .then(success => {
+                if (!success) {
+                    return res.status(403)
+                        .json({
+                            success: false,
+                            message: "Can not update the user."
+                        })
+                }
+
+                return res.status(200)
+                .json({
+                    success: true,
+                    message: "The user successfuly updated."
+                })
+            })
+        }
+    })
 }
 
 exports.removeUser = (req, res) => {
