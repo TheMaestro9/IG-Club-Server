@@ -117,7 +117,7 @@ exports.interestActivity = function (req, res, next) {
         .then(activity => {
             User.findById(userId)
                 .then(user => {
-                    activity.setUsers([user])
+                    activity.addUsers([user])
                         .then(_ => {
                             return res.status(200)
                                 .json({
@@ -138,7 +138,6 @@ exports.interestActivity = function (req, res, next) {
 exports.removeInterest = function (req, res, next) {
     let userId = tokenDecoded(req).id
     let activityId = req.params.activityId
-    let interest = req.body.interest
     Activity.findById(activityId)
         .then(activity => {
             User.findById(userId)
@@ -161,6 +160,33 @@ exports.removeInterest = function (req, res, next) {
             })
         })
 }
+
+exports.removeInterestByAdmin = function (req, res, next) {
+    let userId = req.params.userId 
+    let activityId = req.params.activityId
+    Activity.findById(activityId)
+        .then(activity => {
+            User.findById(userId)
+                .then(user => {
+                    activity.removeUsers([user])
+                        .then(_ => {
+                            return res.status(200)
+                                .json({
+                                    success: true,
+                                    message: "relation removed successfully!"
+                                })
+                        })
+                })
+        })
+        .catch(error => {
+            return res.status(500)
+            json({
+                success: false,
+                message: "This activity does not exist."
+            })
+        })
+}
+
 
 AddInterestedField = function (userActiveties, activities) {
 
@@ -225,8 +251,8 @@ exports.getUserInterests = function (req, res, next) {
     //         })
     //     })
     var qString = "select date_format(i.updatedAt , '%a %d %b %Y') as requestDate, username , mobile "+
-                  " , email , UserId , ActivityId , a.title , a.type  from Interests i, Users u , Activities a "+
-                    " where u.id = i.UserId and i.ActivityId = a.id group by a.type" ; 
+                  " , email , UserId , ActivityId as RelatedTableId , a.title , a.type  from Interests i, Users u , Activities a "+
+                    " where u.id = i.UserId and i.ActivityId = a.id" ; 
     db.query( qString, function (err, userInterests) {
         if (err) {
             console.log(err)
@@ -235,6 +261,7 @@ exports.getUserInterests = function (req, res, next) {
         else {
             return res.status(200).json({
                 success: true,
+                moreDetails:false, 
                 userInterests: userInterests
             }) 
         }

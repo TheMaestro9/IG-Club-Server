@@ -133,12 +133,13 @@ app.get("/query", function (request, response) {
   // execute a query on our database
   var qstring = request.query.q;
   // console.log(qstring);
-  connection.query(qstring, function (err, result) {
+  db = require("./db")
+  db.query(qstring, function (err, result) {
     if (err) {
       console.log(err);
       if (err.code === "PROTOCOL_ENQUEUE_AFTER_FATAL_ERROR") {
 
-        connection.connect(function (err) {
+        db.connect(function (err) {
           if (err) {
             console.log(err);
           }

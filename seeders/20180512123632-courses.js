@@ -29,7 +29,7 @@ module.exports = {
       updatedAt: new Date().toISOString().replace("T", " ").replace("Z", "")
     }, {
       description: "Prepare yourself for IELTS",
-      name: "ILETS Preparation",
+      name: "IELTS Preparation",
       currentPeriod: "2018-05-12 06:23:05",
       nextRound: "2018-06-12 06:23:05",
       cost: 2000,

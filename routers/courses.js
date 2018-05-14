@@ -6,12 +6,14 @@ const checkAdmin = require('../controllers/checkAdmin')
 
 const coursesController = require("../controllers/courses");
 
+router.use(Verify.verifyUser)
+router.get('/course-info', coursesController.getCourseInfo);
+router.post('/course-request', coursesController.addCourseRequest);
 
-router.get('/course-info', Verify.verifyUser, coursesController.getCourseInfo);
 
 router.use(checkAdmin)
-router.put('/edit-course', Verify.verifyUser, coursesController.editCourse);
-router.post('/course-request', Verify.verifyUser, coursesController.addCourseRequest);
-
+router.get('/user-requests' ,coursesController.getUserRequests)
+router.put('/edit-course', coursesController.editCourse);
+router.delete('/remove-request/:courseId/:userId' , coursesController.removeRequestByAdmin)
 
 module.exports = router

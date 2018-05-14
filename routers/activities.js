@@ -13,7 +13,7 @@ router.use(Verify.verifyUser);
 
 router.get("/", controllers.getActivities)
 router.post("/:activityId/interest",  controllers.interestActivity)
-router.delete("/:activityId/remove-interest",  controllers.removeInterest)
+router.delete("/remove-interest/:activityId",  controllers.removeInterest)
 
 
 // Only Admis can add, edit or remove posts
@@ -22,6 +22,7 @@ router.use(checkAdmin)
 router.post("/", controllers.addActivity)
 router.put("/:activityId", controllers.editActivity)
 router.delete("/:activityId", controllers.deleteActivity)
+router.delete("/remove-interest/:activityId/:userId", controllers.removeInterestByAdmin)
 router.get("/user-interests", controllers.getUserInterests)
 
 
