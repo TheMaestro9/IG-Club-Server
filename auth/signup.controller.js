@@ -1,6 +1,6 @@
 var models  = require('../models');
 const passport = require("passport");
-
+const Verify = require("./verify");
 
 // function UndefTest(arr) {
 //     return arr.filter( elm => (typeof elm) === "undefined");
@@ -17,8 +17,16 @@ exports.post = function(req, res, next) {
               err: info
             });
           }
-        
+          var payload = { 
+               id: user.dataValues.id , 
+               role:Boolean (user.dataValues.adim)
+          }
+        //   console.log("in sign up User: " ,  user)
+        //   console.log("info" , info)
+        var token = Verify.getToken(payload);
         return res.status(200).json({
+            success:true  ,
+            token:token , 
             status: 'Registration Successful!'
         });
     })(req, res, next);

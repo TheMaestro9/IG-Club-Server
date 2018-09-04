@@ -11,7 +11,7 @@ let passwordSchema = require("../json-schemaes/passwordSchema")
 //Verify the user before reset the password
 router.post('/forgot-password-check',validateSchema(emailSchema), userController.forgotPassword)
 //Resend again an email to the user
-router.post('/verify', validateSchema(emailSchema), userController.reVerifyMail)
+// router.post('/verify', validateSchema(emailSchema), userController.reVerifyMail)
 
 router.post('/forgot-password-change', userController.newPassword)
 

@@ -125,28 +125,28 @@ exports.newPassword = (req, res) => {
     })
 }
 
-exports.reVerifyMail = (req, res) => {
-    let email = req.body.email
-    User.findOne({
-        where: {"email": email}
-    })
-    .then(user => {
-        if (!user) {
-            return res.status(403)
-                .json({
-                    success: false,
-                    message: "This email does not exist"
-                })
-        } else {
-            sendMail.verifyMail(user) 
-            return res.status(200)
-            .json({
-                success:true,
-                message: "Check your email"
-            })
-        }
-    })
-}
+// exports.reVerifyMail = (req, res) => {
+//     let email = req.body.email
+//     User.findOne({
+//         where: {"email": email}
+//     })
+//     .then(user => {
+//         if (!user) {
+//             return res.status(403)
+//                 .json({
+//                     success: false,
+//                     message: "This email does not exist"
+//                 })
+//         } else {
+//             sendMail.verifyMail(user) 
+//             return res.status(200)
+//             .json({
+//                 success:true,
+//                 message: "Check your email"
+//             })
+//         }
+//     })
+// }
 
 exports.updateUserInfo = (req, res) => {
     let userId = tokenDecoded(req).id

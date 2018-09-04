@@ -5,7 +5,7 @@ const verifyEmail = require('../../testSendMail')
 
 function userCreated(user, done) {
     // send an email to the user to verify his/her email
-    verifyEmail.verifyMail(user)
+    // verifyEmail.verifyMail(user)
     return done(null, user)
 }
 
