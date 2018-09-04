@@ -15,7 +15,7 @@ exports.forgotPass = function(User) {
     let msg = {
         email: User.email,
         subject: "forgot password",
-        content: `go to this link to verify your email\n
+        content: `go to this link to change your password\n
         ig-club.eu-gb.mybluemix.net/forgot-password?token=${token}\n
         this link will expire after 6 hours.`
     }
