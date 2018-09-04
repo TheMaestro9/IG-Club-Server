@@ -77,23 +77,25 @@ exports.forgotPassword = (req, res) => {
     })
     .then(user => {
         if (!user) {
-            return res.status(403)
+            return res.status(200)
                 .json({
                     success: false,
-                    message: "email does not exist"
+                    message: "The email you entered is not registered"
                 })
         }
         sendMail.forgotPass(user)
         return res.status(200)
         .json({
             success: true,
-            message: "Check Your email"
+            message: "A verification link has been sent to your email"
         })
     })
 }
 
 exports.newPassword = (req, res) => {
-    let newPass = randomStr()
+    console.log("im in the new pass area") ; 
+    let newPass = req.body.password ; 
+    console.log("pass" , newPass)
     let hashedPass = passwdEncrypt.getHash(newPass)
     let userId = tokenDecoded(req).id
     User.findById(userId)
@@ -107,12 +109,18 @@ exports.newPassword = (req, res) => {
                     "message": "Error while updating the password"
                 })
             }
-            sendMail.newPassword(user, newPass)
-            return res.status(200)
-            .json({
-                "success": true,
-                "message": "Your password successfuly changed. check your email to see the new password"
-            })
+            console.log("every thing is fine") ; 
+
+
+            // sendMail.newPassword(user, newPass)
+            var path = require('path');
+            res.sendFile(path.join(__dirname, '../public', 'successTransactionMSG.html') )  
+
+            // return res.status(200)
+            // .json({
+            //     "success": true,
+            //     "message": "Your password successfuly changed. check your email to see the new password"
+            // })
         })
     })
 }

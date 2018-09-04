@@ -9,9 +9,11 @@ let emailSchema = require("../json-schemaes/emailSchema")
 let passwordSchema = require("../json-schemaes/passwordSchema")
 
 //Verify the user before reset the password
-router.post('/forgot_password',validateSchema(emailSchema), userController.forgotPassword)
+router.post('/forgot-password-check',validateSchema(emailSchema), userController.forgotPassword)
 //Resend again an email to the user
 router.post('/verify', validateSchema(emailSchema), userController.reVerifyMail)
+
+router.post('/forgot-password-change', userController.newPassword)
 
 //validate the token
 router.use('/', Verify.verifyUser)
@@ -25,6 +27,5 @@ router.delete('/',validateSchema(passwordSchema), userController.removeUser)
 //Remark the user as verified after he/she verify his/her email
 router.get('/verify', verifyEmail)
 //Set a new password for the user after he/she verified his/her email
-router.get('/forgotPassword', userController.newPassword)
 
 module.exports = router;

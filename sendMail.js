@@ -1,42 +1,42 @@
 exports.SendAnEmail = function (email, emailsubject, content) {
     var nodemailer = require('nodemailer');
     var smtpTransport = require('nodemailer-smtp-transport');
-    // var transporter = nodemailer.createTransport(smtpTransport({
-    //     // service: 'Hotmail',
-    //     host: 'smtp-mail.outlook.com',
-    //     port: 587,
-    //     auth: {
-    //         user: 'fastforwardsim@outlook.com', // Your email id
-    //         pass: 'Fastforward$$' // Your password
-    //     }
-    // }));
+    var transporter = nodemailer.createTransport(smtpTransport({
+        service: 'Hotmail',
+        host: 'smtp-mail.outlook.com',
+        port: 587,
+        auth: {
+            user: 'igclub@outlook.com', // Your email id
+            pass: 'IC__1234' // Your password
+        }
+    }));
 
-    var mailConfig;
-    if (process.env.NODE_ENV === 'production' ){
-        // all emails are delivered to destination
-        mailConfig = {
-            host: 'smtp.sendgrid.net',
-            port: 587,
-            auth: {
-                user: 'real.user',
-                pass: 'verysecret'
-            }
-        };
-    } else {
-        // all emails are catched by ethereal.email
-        mailConfig = {
-            host: 'smtp.ethereal.email',
-            port: 587,
-            auth: {
-                user: 'vxtzjoewht5c5heq@ethereal.email',
-                pass: 'JsandZHS4cKRFy2tTR'
-            }
-        };
-    }
-    let transporter = nodemailer.createTransport(mailConfig);
+    // var mailConfig;
+    // if (process.env.NODE_ENV === 'production' ){
+    //     // all emails are delivered to destination
+    //     mailConfig = {
+    //         host: 'smtp.sendgrid.net',
+    //         port: 587,
+    //         auth: {
+    //             user: 'real.user',
+    //             pass: 'verysecret'
+    //         }
+    //     };
+    // } else {
+    //     // all emails are catched by ethereal.email
+    //     mailConfig = {
+    //         host: 'smtp.ethereal.email',
+    //         port: 587,
+    //         auth: {
+    //             user: 'vxtzjoewht5c5heq@ethereal.email',
+    //             pass: 'JsandZHS4cKRFy2tTR'
+    //         }
+    //     };
+    // }
+    // let transporter = nodemailer.createTransport(mailConfig);
 
     var mailOptions = {
-    from: 'fastforwardsim@outlook.com', // sender address
+    from: 'igclub@outlook.com', // sender address
     to: email, // list of receivers
     subject: emailsubject, // Subject line
     //text: text //, // plaintext body
@@ -44,6 +44,7 @@ exports.SendAnEmail = function (email, emailsubject, content) {
     };
     
     transporter.sendMail(mailOptions, function (error, info) {
+        console.log("manatos");
     if (error) {
         //globalCTRL.addErrorLog(error);
         // res.send(error.message);

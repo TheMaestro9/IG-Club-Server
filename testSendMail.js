@@ -14,9 +14,9 @@ exports.forgotPass = function(User) {
     let token = Verify.getShortToken(payload)
     let msg = {
         email: User.email,
-        subject: "Testing forgot password",
-        content: `go to this linke to verify your email\n
-            /user/forgotPassword/?token=${token}\n
+        subject: "forgot password",
+        content: `go to this link to verify your email\n
+        ig-club.eu-gb.mybluemix.net/forgot-password?token=${token}\n
         this link will expire after 6 hours.`
     }
 
@@ -31,7 +31,7 @@ exports.verifyMail = function (User) {
     let msg = {
         email: User.email,
         subject: "Testing verify email",
-        content: `go to this linke to verify your email\n
+        content: `go to this link to verify your email\n
             /user/verify/?token=${token}\n
         this link will expire after 6 hours.`
     }

@@ -34,13 +34,9 @@ module.exports = (sequelize, DataTypes) => {
     });
   }
   User.associate = function (models) {
-    models.User.belongsToMany(models.Books, {
+    models.User.belongsToMany(models.Book, {
       through: "BookRequests"
     });
-  }
-
-  User.associate = function(models) {
-    models.User.hasMany(models.Child)
   }
 
   User.associate = function(models) {

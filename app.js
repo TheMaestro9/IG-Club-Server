@@ -1,3 +1,5 @@
+
+
 /*eslint-env node*/
 
 //------------------------------------------------------------------------------
@@ -120,11 +122,23 @@ app.get('/check-token', checkTokenController.checkToken);
 
 
 
-app.get("/hello", function(request,response){
+app.get("/forgot-password", function(request,response){
 
-  response.send("hello"); 
+  response.sendfile("public/forget.html") ; 
+  // var sendMail = require("./sendMail") ; 
+  // sendMail.SendAnEmail("walidmoussa995@gmail.com" , "hello" , "welcome to ig club") ; 
+  // response.send("sending email") 
+  // response.send("hello"); 
 
 });
+
+app.post("/forget-password" , function (req , res) { 
+
+  console.log ( req.body )  ; 
+  res.sendfile("public/successTransactionMSG.html") ; 
+  console.log("got a msg" ) ; 
+
+}) ; 
 
 
 

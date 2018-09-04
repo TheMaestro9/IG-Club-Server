@@ -4,7 +4,7 @@ const config = require("../config/passport/config");
 
 exports.getToken = function (user) {
     return jwt.sign(user, config.secretKey, {
-        expiresIn: 3600 * 25 
+        expiresIn: 3600 * 24 * 30 * 12 *5 // stay loged in for 5 years   
     });
 };
 

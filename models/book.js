@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = (sequelize, DataTypes) => {
-    var Books = sequelize.define('Books', {
+    var Book = sequelize.define('Book', {
         bookTitle: DataTypes.STRING, 
         imgUrl:DataTypes.STRING, 
         ISBN: DataTypes.STRING,
@@ -15,18 +15,13 @@ module.exports = (sequelize, DataTypes) => {
         }
     });
 
-    Books.associate = function(models) {    
-        models.Books.belongsToMany(models.User, {
+    Book.associate = function(models) {    
+        Book.belongsToMany(models.User, {
             through:"BookRequests"
         });
     }
 
-    Books.associate = function (models) {
-        models.Books.belongsTo(models.User);
-      }
-    
-    
-    return Books 
+    return Book 
     
 
 }
